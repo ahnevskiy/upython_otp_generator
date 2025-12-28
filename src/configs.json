@@ -1,0 +1,33 @@
+{
+    "wifi": {
+        "ssid": "put your ssid here",
+        "password": ""
+    },
+    "codes": [
+        {
+            "name": "Test_1",
+            "secret": "DWRGVKRPQJLNU4GY",
+            "digits": 6,
+            "steps": 30
+        },
+        {
+            "name": "Test_2",
+            "secret": "DWRGVKRPQJLNU4GB",
+            "digits": 6,
+            "steps": 30
+        }
+    ],
+    "i2c_bus": {
+        "lcd": {
+            "i2c_address": 39
+        },
+        "config": {
+            "scl": 22,
+            "freq": 40000,
+            "sda": 21
+        }
+    },
+    "gpio": {
+        "button": 3
+    }
+}

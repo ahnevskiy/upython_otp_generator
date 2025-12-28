@@ -1,2 +1,1 @@
-# upython_otp_generator
-my pet-project for home otp generator with lcd
+Home OTP-generator with lcd, based on ESP32 and uPython
