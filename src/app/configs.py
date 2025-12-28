@@ -15,7 +15,7 @@ class Wifi:
 class Code:
     def __init__(self, code_dict):
         self.name = code_dict["name"]
-        self.secret = code_dict["secret"]
+        self.secret = code_dict["secret"][:-1]
         self.steps = code_dict["steps"]
         self.digits = code_dict["digits"]
 

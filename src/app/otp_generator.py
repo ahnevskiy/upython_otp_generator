@@ -1,7 +1,7 @@
 import gc
 import utime  
 
-from app.utils.totp import totp
+from app.utils.totp import calculate_totp
 from app.utils.str_helper import str_ljust, progress_bar
 
 
@@ -33,10 +33,10 @@ class OTPGenerator():
         return self.codes_list[self.code_index]
     
     def update_password(self):
-        self.password, self.expiry = totp(self.get_true_time(),
-                                          self.get_current_code().secret,
-                                          self.get_current_code().steps,
-                                          self.get_current_code().digits)
+        self.password, self.expiry = calculate_totp(self.get_true_time(),
+                                                    self.get_current_code().secret,
+                                                    self.get_current_code().steps,
+                                                    self.get_current_code().digits)
 
     def print_info(self):
         seconds = str_ljust(f"{self.expiry}", " ", 2)
