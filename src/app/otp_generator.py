@@ -73,7 +73,8 @@ class OTPGenerator():
         
         if self.is_display_active:
             self.inc_code_index()
-            self.update_password()
         else:
             self.is_display_active = True
             self.lcd.backlight(True)
+        
+        self.update_password()
