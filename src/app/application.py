@@ -1,8 +1,10 @@
 import gc
 import sys
+from time import sleep
 from machine import Pin, Timer, SoftI2C
 
 from app.configs import config, TICK_PERIOD_MS
+from app.utils.sd_input import SDInput
 from app.otp_generator import OTPGenerator
 from app.utils.lcd1602 import LCD1602
 from app.utils.time_helper import get_time_shift_from_ntp_server
@@ -14,18 +16,25 @@ class Application:
         ### init garbage collector
         gc.enable()
         gc.collect()
-        
+
         ### init LCD
         I2C_bus = SoftI2C(scl=Pin(config.i2c_bus["config"]["scl"]),
                           sda=Pin(config.i2c_bus["config"]["sda"]),
                           freq=config.i2c_bus["config"]["freq"])
-        
+
         lcd = LCD1602(i2c=I2C_bus, addr=config.i2c_bus["lcd"]["i2c_address"])
-        
+
         lcd.backlight(on=True)
 
         try:
             lcd.print_in_line(f"[start] v{config.app_version}", 0)
+            sleep(1)
+
+            ### input aps
+            board_button = Pin(config.gpio_button, Pin.IN, Pin.PULL_UP)
+            aspa = SDInput(lcd, board_button)
+            aps = aspa.read_aps()
+            config.update(aps)
 
             ### init WiFi
             wifi_station = WiFi(config.wifi.ssid, config.wifi.password)
@@ -53,10 +62,9 @@ class Application:
             otp_generator = OTPGenerator(config.codes, time_shift, lcd)
 
             ### init button
-            def button_handler(self):
+            def button_handler(pin):
                 otp_generator.on_button_pressed()
 
-            board_button = Pin(config.gpio_button, Pin.IN, Pin.PULL_UP)
             board_button.irq(trigger=Pin.IRQ_FALLING, handler=button_handler)
 
             ### init main loop

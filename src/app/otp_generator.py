@@ -1,5 +1,5 @@
 import gc
-import utime  
+import utime
 
 from app.configs import TICKS_PER_SECOND, DISPLAY_ACTIVITY_DURATION
 from app.utils.totp import calculate_totp
@@ -28,10 +28,10 @@ class OTPGenerator:
             self.code_index += 1
             if self.code_index == len(self.codes_list):
                 self.code_index = 0
-            
+
     def get_current_code(self):
         return self.codes_list[self.code_index]
-    
+
     def calc_expiry(self):
         code = self.get_current_code()
         return code.steps - (self.get_true_time() % code.steps)
@@ -45,10 +45,10 @@ class OTPGenerator:
     def print_info(self):
         seconds = str_ljust(f"{self.expiry}", " ", 2)
         progress_bar_str = progress_bar(self.expiry, self.get_current_code().steps, 10)
-        
+
         self.lcd.print_in_line(f"{self.get_current_code().name}:[{self.password}]", 0)
         self.lcd.print_in_line(f"{progress_bar_str} {seconds}s", 1)
-  
+
     def deactivate_display(self):
        self.is_display_active = False
        self.lcd.backlight(False)

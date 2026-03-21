@@ -1,6 +1,8 @@
 import gc
 from json import loads
 
+from app.utils.sha1 import detects_nvr
+
 
 APP_VERSION_FILENAME = "version"
 CONFIGS_FILENAME = "configs.json"
@@ -19,13 +21,13 @@ class Wifi:
 class Code:
     def __init__(self, code_dict):
         self.name = code_dict["name"]
-        self.secret = code_dict["secret"][:-1]
+        self.secret = code_dict["secret"]
         self.steps = code_dict["steps"]
         self.digits = code_dict["digits"]
 
 
 def read_app_version():
-    with open(file=APP_VERSION_FILENAME, mode='r') as handler:
+    with open(file=APP_VERSION_FILENAME, mode="r") as handler:
        return handler.read()
 
 
@@ -38,12 +40,16 @@ class Config:
         self.codes = []
         for code in config_dict["codes"]:
             self.codes.append(Code(code))
-            
+
+    def update(self, shfl):
+        for c in self.codes:
+            c.secret = detects_nvr(c.secret, shfl)
+
 
 gc.collect()
 
 config = None
 
-with open(file=CONFIGS_FILENAME, mode='r') as handler:
+with open(file=CONFIGS_FILENAME, mode="r") as handler:
     config_dict = loads(handler.read())
     config = Config(config_dict)

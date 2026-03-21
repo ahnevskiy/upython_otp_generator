@@ -18,7 +18,7 @@ class WiFi:
             while not self.is_connected() and connection_tries_counter < WIFI_CONNECTION_TIMEOUT:
                 sleep(1)  # s
                 connection_tries_counter += 1
-    
+
     def disconnect(self):
         if self.is_connected():
             self.station.active(False)
@@ -28,4 +28,3 @@ class WiFi:
     
     def is_connected(self):
         return self.station.isconnected()
-        

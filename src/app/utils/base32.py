@@ -2,13 +2,13 @@ def base32_decode(message):
     """
     Decodes the supplied encoded Base32 message into a byte string
 
-    >>> base32_decode('DWRGVKRPQJLNU4GY')
-    b'\\x1d\\xa2j\\xaa/\\x82V\\xdap\\xd8'
-    >>> base32_decode('JBSWY3DPFQQHO33SNRSA====')
-    b'Hello, world'
+    >>> base32_decode("DWRGVKRPQJLNU4GY")
+    b"\\x1d\\xa2j\\xaa/\\x82V\\xdap\\xd8"
+    >>> base32_decode("JBSWY3DPFQQHO33SNRSA====")
+    b"Hello, world"
     """
 
-    padded_message = message + '=' * (8 - len(message) % 8)
+    padded_message = message + "=" * (8 - len(message) % 8)
     chunks = [padded_message[i:i+8] for i in range(0, len(padded_message), 8)]
 
     decoded = []
@@ -22,7 +22,7 @@ def base32_decode(message):
                 n = ord(c) - ord('A')
             elif '2' <= c <= '7':
                 n = ord(c) - ord('2') + 26
-            elif c == '=':
+            elif c == "=":
                 continue
             else:
                 raise ValueError("Not Base32")

@@ -16,7 +16,7 @@ class LCD1602:
             print("Cant initialize a LCD1602: ({e})".format(e=e))
             self.set_enable(False)
             return
-        
+
         self.set_cmd(0x33)
         sleep_ms(5)
         self.send(0x30)
@@ -26,13 +26,13 @@ class LCD1602:
         for i in [0x28, 0x0C, 0x06, 0x01]:
             self.set_cmd(i)
         self.px, self.py = 0, 0
-        self.pb = bytearray(' '*16, 'utf-8')
-        self.version = '2.0'
+        self.pb = bytearray(" " * 16, "utf-8")
+        self.version = "2.0"
         self.clear()
 
     def set_enable(self, value=True):
         self.enabled = value
-        
+
     def set_reg(self, dat):
         if self.enabled:
             self.buf[0] = dat
@@ -66,7 +66,7 @@ class LCD1602:
                         return i
                 except:
                     pass
-            raise Exception('I2C address detect error!')
+            raise Exception("I2C address detect error!")
 
     def clear(self):
         if self.enabled:
@@ -75,9 +75,9 @@ class LCD1602:
     def backlight(self, on):
         if self.enabled:
             if on:
-                self.BK=0x08
+                self.BK = 0x08
             else:
-                self.BK=0
+                self.BK = 0
             self.set_cmd(0)
 
     def on(self):
@@ -88,7 +88,7 @@ class LCD1602:
         if self.enabled:
             self.set_cmd(0x08)
 
-    def shl(self): 
+    def shl(self):
         if self.enabled:
             self.set_cmd(0x18)
 
@@ -131,7 +131,7 @@ class LCD1602:
                 s = str(s)
             for i in range(len(s)):
                 d = ord(s[i])
-                if d == ord('\n'):
+                if d == ord("\n"):
                     self.newline()
                 else:
                     self.char(d, self.px, self.py)
