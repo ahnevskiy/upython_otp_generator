@@ -5,21 +5,21 @@ import utime
 
 def get_ntp_time(host="pool.ntp.org"):
     try:
-        # Формируем NTP-запрос
+        # NTP request
         ntp_query = bytearray(48)
-        ntp_query[0] = 0x1B  # Режим запроса
+        ntp_query[0] = 0x1B
 
-        # Отправляем UDP-пакет
+        # Send UDP packet
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.settimeout(1)
         addr = socket.getaddrinfo(host, 123)[0][-1]
         sock.sendto(ntp_query, addr)
 
-        # Получаем ответ
+        # Receive response
         msg = sock.recv(48)
         sock.close()
 
-        # Разбираем NTP-пакет (см. RFC 5905)
+        # Parse NTP packet (RFC 5905)
         ntp_time = struct.unpack("!12I", msg)[10] - 2208988800
         return ntp_time
     except Exception as e:

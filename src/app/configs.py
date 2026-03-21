@@ -26,7 +26,7 @@ class Code:
 
 def read_app_version():
     with open(file=APP_VERSION_FILENAME, mode="r") as handler:
-       return handler.read()
+        return handler.read()
 
 
 class Config:
