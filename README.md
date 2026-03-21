@@ -199,7 +199,7 @@ Line 2: [||||||||  ] 15s
 
 ## Acknowledgements
 
-Built with assistance from [Claude Code](https://claude.ai/claude-code).
+Built with assistance from [Claude Code](https://www.anthropic.com/claude-code).
 
 ## License
 
