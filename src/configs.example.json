@@ -1,20 +1,20 @@
 {
     "wifi": {
-        "ssid": "put your ssid here",
-        "password": ""
+        "ssid": "YourWiFiName",
+        "password": "YourWiFiPassword"
     },
     "codes": [
         {
-            "name": "Test_1",
-            "secret": "DWRGVKRPQJLNU4GY",
+            "name": "GitHub",
+            "secret": "ORURZ4FVYSXC6XNP",
             "digits": 6,
-            "steps": 30
+            "period": 30
         },
         {
-            "name": "Test_2",
-            "secret": "DWRGVKRPQJLNU4GB",
+            "name": "Google",
+            "secret": "ANOTHER_OBFUSCATED_KEY",
             "digits": 6,
-            "steps": 30
+            "period": 30
         }
     ],
     "i2c_bus": {
@@ -29,5 +29,6 @@
     },
     "gpio": {
         "button": 3
-    }
+    },
+    "pin_length": 4
 }

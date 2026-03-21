@@ -17,7 +17,7 @@ def str_cjust(stringl, stringr, sym, length):
     return stringl + sym*(length - len(stringl) - len(stringr)) + stringr
 
 
-def progress_bar(expiry, steps_count, lenght):
-    prog = "|" * (lenght * expiry // steps_count)
-    progress = str_rjust(prog, " ", lenght)
+def progress_bar(expiry, steps_count, length):
+    prog = "|" * (length * expiry // steps_count)
+    progress = str_rjust(prog, " ", length)
     return f'[{progress}]'
