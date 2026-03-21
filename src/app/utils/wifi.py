@@ -4,7 +4,7 @@ from time import sleep
 WIFI_CONNECTION_TIMEOUT = 30
 
 
-class WiFi():
+class WiFi:
     def __init__(self, ssid, password):
         self.ssid = ssid
         self.password = password

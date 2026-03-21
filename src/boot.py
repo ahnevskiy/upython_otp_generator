@@ -6,5 +6,4 @@ def bootloader():
     print(f'boot.version=[{version_boot}]')
 
 
-if __name__ == '__main__':
-    bootloader()
+bootloader()

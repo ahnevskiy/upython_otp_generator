@@ -5,6 +5,10 @@ from json import loads
 APP_VERSION_FILENAME = "version"
 CONFIGS_FILENAME = "configs.json"
 
+TICK_PERIOD_MS = 200
+TICKS_PER_SECOND = 1000 // TICK_PERIOD_MS
+DISPLAY_ACTIVITY_DURATION = 60
+
 
 class Wifi:
     def __init__(self, wifi_dict):

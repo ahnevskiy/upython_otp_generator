@@ -51,18 +51,18 @@ def sha1(message):
                 f = b ^ c ^ d
                 k = 0xCA62C1D6
             a, b, c, d, e = (
-                left_rotate(a, 5) + f + e + k + expanded_chunk[i] & 0xFFFFFFFF,
+                (left_rotate(a, 5) + f + e + k + expanded_chunk[i]) & 0xFFFFFFFF,
                 a,
                 left_rotate(b, 30),
                 c,
                 d,
             )
         h = (
-            h[0] + a & 0xFFFFFFFF,
-            h[1] + b & 0xFFFFFFFF,
-            h[2] + c & 0xFFFFFFFF,
-            h[3] + d & 0xFFFFFFFF,
-            h[4] + e & 0xFFFFFFFF,
+            (h[0] + a) & 0xFFFFFFFF,
+            (h[1] + b) & 0xFFFFFFFF,
+            (h[2] + c) & 0xFFFFFFFF,
+            (h[3] + d) & 0xFFFFFFFF,
+            (h[4] + e) & 0xFFFFFFFF,
         )
 
     return struct.pack(">5I", *h)
