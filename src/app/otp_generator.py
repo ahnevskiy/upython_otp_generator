@@ -34,19 +34,19 @@ class OTPGenerator:
 
     def calc_expiry(self):
         code = self.get_current_code()
-        return code.steps - (self.get_true_time() % code.steps)
+        return code.p - (self.get_true_time() % code.p)
 
     def update_password(self):
         self.password, self.expiry = calculate_totp(self.get_true_time(),
-                                                    self.get_current_code().secret,
-                                                    self.get_current_code().steps,
-                                                    self.get_current_code().digits)
+                                                    self.get_current_code().v,
+                                                    self.get_current_code().p,
+                                                    self.get_current_code().l)
 
     def print_info(self):
         seconds = str_ljust(f"{self.expiry}", " ", 2)
-        progress_bar_str = progress_bar(self.expiry, self.get_current_code().steps, 10)
+        progress_bar_str = progress_bar(self.expiry, self.get_current_code().p, 10)
 
-        self.lcd.print_in_line(f"{self.get_current_code().name}:[{self.password}]", 0)
+        self.lcd.print_in_line(f"{self.get_current_code().t}:[{self.password}]", 0)
         self.lcd.print_in_line(f"{progress_bar_str} {seconds}s", 1)
 
     def deactivate_display(self):

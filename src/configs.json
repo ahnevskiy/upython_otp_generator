@@ -3,18 +3,18 @@
         "ssid": "put your ssid here",
         "password": ""
     },
-    "codes": [
+    "ccs": [
         {
-            "name": "Test_1",
-            "secret": "DWRGVKRPQJLNU4GY",
-            "digits": 6,
-            "steps": 30
+            "t": "First",
+            "v": "DWRGVKRPQJLNU4GY",
+            "l": 6,
+            "p": 30
         },
         {
-            "name": "Test_2",
-            "secret": "DWRGVKRPQJLNU4GB",
-            "digits": 6,
-            "steps": 30
+            "t": "Second",
+            "v": "DWRGVKRPQJLNU4GB",
+            "l": 6,
+            "p": 30
         }
     ],
     "i2c_bus": {

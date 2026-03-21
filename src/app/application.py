@@ -59,7 +59,7 @@ class Application:
             wifi_station.disconnect()
 
             ### init otp-generator
-            otp_generator = OTPGenerator(config.codes, time_shift, lcd)
+            otp_generator = OTPGenerator(config.ccs, time_shift, lcd)
 
             ### init button
             def button_handler(pin):
