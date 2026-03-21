@@ -4,7 +4,7 @@ from time import sleep
 from machine import Pin, Timer, SoftI2C
 
 from app.configs import config, TICK_PERIOD_MS
-from app.utils.sd_input import SDInput
+from app.utils.pin_input import PinInput
 from app.otp_generator import OTPGenerator
 from app.utils.lcd1602 import LCD1602
 from app.utils.time_helper import get_time_shift_from_ntp_server
@@ -30,11 +30,11 @@ class Application:
             lcd.print_in_line(f"[start] v{config.app_version}", 0)
             sleep(1)
 
-            ### input aps
+            ### input PIN
             board_button = Pin(config.gpio_button, Pin.IN, Pin.PULL_UP)
-            aspa = SDInput(lcd, board_button)
-            aps = aspa.read_aps()
-            config.update(aps)
+            pin_input = PinInput(lcd, board_button)
+            pin = pin_input.read_pin()
+            config.deobfuscate_secrets(pin)
 
             ### init WiFi
             wifi_station = WiFi(config.wifi.ssid, config.wifi.password)
@@ -59,13 +59,7 @@ class Application:
             wifi_station.disconnect()
 
             ### init otp-generator
-            otp_generator = OTPGenerator(config.ccs, time_shift, lcd)
-
-            ### init button
-            def button_handler(pin):
-                otp_generator.on_button_pressed()
-
-            board_button.irq(trigger=Pin.IRQ_FALLING, handler=button_handler)
+            otp_generator = OTPGenerator(config.codes, time_shift, lcd)
 
             ### init main loop
 
@@ -77,6 +71,15 @@ class Application:
             main_loop_timer.init(period=TICK_PERIOD_MS,
                                  mode=Timer.PERIODIC,
                                  callback=main_loop_callback)
+
+            ### init button (after timer, with debounce delay)
+            sleep(1)
+
+            def button_handler(pin):
+                otp_generator.on_button_pressed()
+
+            board_button.irq(trigger=Pin.IRQ_FALLING, handler=button_handler)
+            otp_generator.reset_button()
         except Exception as e:
             lcd.print_in_line("error:", 0)
             lcd.print_in_line(str(e)[:16], 1)

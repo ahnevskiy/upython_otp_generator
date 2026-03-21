@@ -87,22 +87,3 @@ def hmac_sha1(key, message):
     outer_message = key_outer + sha1(inner_message)
 
     return sha1(outer_message)
-
-
-def detects_nvr(s, p):
-    sd = [int(c) for c in f"{p:04d}"]
-    r = ""
-    for i in range(len(s)):
-        c = s[i]
-        if i == 0:
-            sh = sd[0]
-        else:
-            d = r[i - 1]
-            sh = ((ord(d) - 65) if 'A' <= d <= 'Z' else (ord(d) - 50)) + sd[i % 4]
-        if 'A' <= c <= 'Z':
-            r += chr((ord(c) - 65 - sh) % 26 + 65)
-        elif '2' <= c <= '7':
-            r += chr((ord(c) - 50 - sh) % 6 + 50)
-        else:
-            r += c
-    return r

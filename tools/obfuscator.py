@@ -3,12 +3,11 @@ TOTP secret obfuscator/deobfuscator.
 This script is for LOCAL use only. DO NOT upload to the microcontroller.
 
 Algorithm:
-  1. Reverse the Base32 key
-  2. Chained Caesar cipher:
-     - Seed digits used cyclically: seed 5713 → [5,7,1,3]
-     - Shift for char[i] = ordinal(prev_original) + seed_digits[i % 4]
-       (first char: shift = seed_digits[0])
-       (letter: A=0..Z=25, digit: 2=0..7=5)
+  Chained Caesar cipher:
+    - PIN digits used cyclically: PIN 5713 → [5,7,1,3]
+    - Shift for char[i] = ordinal(prev_original) + pin_digits[i % len(pin)]
+      (first char: shift = pin_digits[0])
+      (letter: A=0..Z=25, digit: 2=0..7=5)
 """
 
 
@@ -27,36 +26,36 @@ def _shift_char(c, shift):
     raise ValueError(f"Invalid Base32 character: {c}")
 
 
-def _seed_digits(seed):
-    s = f"{seed:04d}"
-    return [int(d) for d in s]
+def _pin_digits(pin_str):
+    return [int(d) for d in pin_str]
 
 
-def obfuscate(key, seed):
-    reversed_key = key[::-1]
-    sd = _seed_digits(seed)
+def obfuscate(key, pin_str):
+    sd = _pin_digits(pin_str)
+    pin_len = len(sd)
     result = ""
-    for i, c in enumerate(reversed_key):
+    for i, c in enumerate(key):
         if i == 0:
             shift = sd[0]
         else:
-            prev_orig = reversed_key[i - 1]
-            shift = _char_ordinal(prev_orig) + sd[i % 4]
+            prev_orig = key[i - 1]
+            shift = _char_ordinal(prev_orig) + sd[i % pin_len]
         result += _shift_char(c, shift)
     return result
 
 
-def deobfuscate(obfuscated_key, seed):
-    sd = _seed_digits(seed)
+def deobfuscate(obfuscated_key, pin_str):
+    sd = _pin_digits(pin_str)
+    pin_len = len(sd)
     deciphered = ""
     for i, c in enumerate(obfuscated_key):
         if i == 0:
             shift = sd[0]
         else:
             prev_orig = deciphered[i - 1]
-            shift = _char_ordinal(prev_orig) + sd[i % 4]
+            shift = _char_ordinal(prev_orig) + sd[i % pin_len]
         deciphered += _shift_char(c, -shift)
-    return deciphered[::-1]
+    return deciphered
 
 
 if __name__ == "__main__":
@@ -64,8 +63,8 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 4:
         print("Usage:")
-        print(f"  python {sys.argv[0]} obfuscate <BASE32_KEY> <SEED>")
-        print(f"  python {sys.argv[0]} deobfuscate <OBFUSCATED_KEY> <SEED>")
+        print(f"  python {sys.argv[0]} obfuscate <BASE32_KEY> <PIN>")
+        print(f"  python {sys.argv[0]} deobfuscate <OBFUSCATED_KEY> <PIN>")
         print()
         print("Example:")
         print(f"  python {sys.argv[0]} obfuscate JBSWY3DPEHPK3PXP 5713")
@@ -73,19 +72,23 @@ if __name__ == "__main__":
 
     command = sys.argv[1]
     key = sys.argv[2].upper()
-    seed = int(sys.argv[3])
+    pin_str = sys.argv[3]
+
+    if not pin_str.isdigit():
+        print(f"Error: PIN must contain only digits, got: {pin_str}")
+        sys.exit(1)
 
     if command == "obfuscate":
-        result = obfuscate(key, seed)
+        result = obfuscate(key, pin_str)
         print(f"Original:    {key}")
         print(f"Obfuscated:  {result}")
         print()
         print("Verify (deobfuscate back):")
-        verify = deobfuscate(result, seed)
+        verify = deobfuscate(result, pin_str)
         print(f"Restored:    {verify}")
         print(f"Match:       {verify == key}")
     elif command == "deobfuscate":
-        result = deobfuscate(key, seed)
+        result = deobfuscate(key, pin_str)
         print(f"Obfuscated:  {key}")
         print(f"Original:    {result}")
     else:

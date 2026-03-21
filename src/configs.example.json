@@ -1,0 +1,34 @@
+{
+    "wifi": {
+        "ssid": "YourWiFiName",
+        "password": "YourWiFiPassword"
+    },
+    "codes": [
+        {
+            "name": "GitHub",
+            "secret": "ORURZ4FVYSXC6XNP",
+            "digits": 6,
+            "period": 30
+        },
+        {
+            "name": "Google",
+            "secret": "ANOTHER_OBFUSCATED_KEY",
+            "digits": 6,
+            "period": 30
+        }
+    ],
+    "i2c_bus": {
+        "lcd": {
+            "i2c_address": 39
+        },
+        "config": {
+            "scl": 22,
+            "freq": 40000,
+            "sda": 21
+        }
+    },
+    "gpio": {
+        "button": 3
+    },
+    "pin_length": 4
+}
