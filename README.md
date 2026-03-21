@@ -197,6 +197,10 @@ Line 2: [||||||||  ] 15s
 └── README.md
 ```
 
+## Acknowledgements
+
+Built with assistance from [Claude Code](https://claude.ai/claude-code).
+
 ## License
 
 [Unlicense](https://unlicense.org) — public domain. See [LICENSE](LICENSE).
